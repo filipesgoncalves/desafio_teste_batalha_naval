@@ -191,7 +191,7 @@ class BatalhaNaval {
     const atirador = this.vez;
     const alvo = this.jogadores[1 - atirador];
     const tiro = alvo.tabuleiro.receberTiro(coordenada);
-    this.historico.push({ jogador: this.jogadores[atirador].nome, coordenada: String(coordenada).toUpperCase(), ...tiro });
+    this.historico.push({ jogador: this.jogadores[atirador].nome, coordenada: escreverCoordenada(lerCoordenada(coordenada)), ...tiro });
     if (alvo.tabuleiro.todosAfundados) {
       this.fase = 'fim';
       this.vencedor = this.jogadores[atirador].nome;
@@ -433,6 +433,12 @@ describe('Tiros', () => {
     const jogo = partidaPronta();
     expect(() => jogo.atirar('K5')).toThrow('Coordenada inválida');
     expect(jogo.jogadorDaVez.nome).toBe('Ana');
+  });
+
+  test('o histórico guarda a coordenada no formato do tabuleiro', () => {
+    const jogo = partidaPronta();
+    jogo.atirar(' h3 ');
+    expect(jogo.historico[0]).toEqual({ jogador: 'Ana', coordenada: 'H3', resultado: 'agua' });
   });
 
   test('a visão do adversário mostra água, acertos e navios afundados', () => {
