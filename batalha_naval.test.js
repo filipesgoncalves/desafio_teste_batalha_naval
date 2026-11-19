@@ -380,6 +380,11 @@ describe('Início da partida', () => {
     expect(() => jogo.posicionar(0, 'submarino', 'H1', 'H')).toThrow('posicionamento já terminou');
   });
 
+  test('depois que a batalha começa, ninguém sorteia a frota de novo', () => {
+    const jogo = partidaPronta();
+    expect(() => jogo.posicionarAleatoriamente(0, criarAleatorio(1))).toThrow('posicionamento já terminou');
+  });
+
   test('jogador inválido é recusado', () => {
     const jogo = new BatalhaNaval();
     expect(() => jogo.posicionar(2, 'submarino', 'A1', 'H')).toThrow('Jogador inválido');
@@ -490,6 +495,19 @@ describe('Fim da partida', () => {
     });
     expect(jogo.fase).toBe('fim');
     expect(() => jogo.atirar('J1')).toThrow('A partida já terminou');
+  });
+
+  test('depois do fim a vez fica com quem venceu', () => {
+    const jogo = partidaPronta();
+    CASAS_DA_FROTA_PADRAO.forEach((casa, i) => {
+      jogo.atirar(casa);
+      if (jogo.fase !== 'fim') jogo.atirar(CASAS_DE_AGUA[i]);
+    });
+    expect(jogo.jogadorDaVez.nome).toBe('Ana');
+  });
+
+  test('tabuleiro sem navios não conta como frota afundada', () => {
+    expect(new Tabuleiro().todosAfundados).toBe(false);
   });
 });
 
