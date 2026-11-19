@@ -23,7 +23,7 @@ const FROTA = [
   { tipo: 'porta-avioes', nome: 'Porta-aviões', tamanho: 5 },
   { tipo: 'encouracado', nome: 'Encouraçado', tamanho: 4 },
   { tipo: 'submarino', nome: 'Submarino', tamanho: 3 },
-  { tipo: 'destroier', nome: 'Destroier', tamanho: 2 },
+  { tipo: 'destroier', nome: 'Destroier', tamanho: 2, apelidos: ['hidroaviao'] }, // "Destroier ou Hidroavião"
 ];
 
 /** Gerador pseudoaleatório com semente (mulberry32), para partidas reproduzíveis. */
@@ -69,9 +69,9 @@ class Tabuleiro {
    * Regras: dentro do tabuleiro, sem sobrepor e sem encostar em outro navio (nem na diagonal).
    */
   posicionar(tipo, inicio, orientacao) {
-    const modelo = FROTA.find((n) => n.tipo === tipo);
+    const modelo = FROTA.find((n) => n.tipo === tipo || (n.apelidos || []).includes(tipo));
     if (!modelo) throw new Error(`Navio desconhecido: ${tipo}`);
-    if (this.navios.some((n) => n.tipo === tipo)) throw new Error(`${modelo.nome} já foi posicionado`);
+    if (this.navios.some((n) => n.tipo === modelo.tipo)) throw new Error(`${modelo.nome} já foi posicionado`);
     if (orientacao !== 'H' && orientacao !== 'V') throw new Error('Orientação deve ser H (horizontal) ou V (vertical)');
 
     const { linha, coluna } = lerCoordenada(inicio);
@@ -313,6 +313,14 @@ describe('Posicionamento', () => {
     const t = new Tabuleiro();
     t.posicionar('submarino', 'A1', 'H');
     expect(() => t.posicionar('submarino', 'J1', 'H')).toThrow('Submarino já foi posicionado');
+  });
+
+  test('o navio de 2 casas pode ser chamado de Destroier ou de Hidroavião, mas é um só', () => {
+    const t = new Tabuleiro();
+    const navio = t.posicionar('hidroaviao', 'A1', 'H');
+    expect(navio.tipo).toBe('destroier');
+    expect(navio.casas).toHaveLength(2);
+    expect(() => t.posicionar('destroier', 'J1', 'H')).toThrow('Destroier já foi posicionado');
   });
 
   test('navio que não faz parte da frota é recusado', () => {
