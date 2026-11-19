@@ -45,7 +45,7 @@ O arquivo tem três partes:
 | Frota | 4 navios de 5, 4, 3 e 2 casas, 14 no total |
 | Posicionamento | Horizontal e vertical, navio fora do tabuleiro, sobreposto, encostado (de lado e na diagonal), repetido, Hidroavião como outro nome do Destroier, desconhecido, orientação inválida, posicionamento sorteado sempre válido |
 | Início da partida | Começa no posicionamento, só se atira com as duas frotas completas, não se reposiciona na batalha, jogador inválido |
-| Tiros | Água, acerto, navio afundado, alternância da vez, tiro no tabuleiro certo, tiro repetido e fora do tabuleiro sem perder a vez, visão do adversário |
+| Tiros | Água, acerto, navio afundado, alternância da vez, tiro no tabuleiro certo, tiro repetido e fora do tabuleiro sem perder a vez, coordenada do histórico no formato do tabuleiro, visão do adversário |
 | Fim da partida | Quem afunda a frota inteira vence (jogador 1 ou 2), nada é aceito depois |
 | Partida simulada | Duas frotas sorteadas e tiros sorteados até alguém vencer, com o histórico conferido |
 
@@ -54,3 +54,4 @@ Cada teste monta a própria partida, faz as jogadas e confere o resultado de cad
 ## Colaborador
 
 - Filipe ([filipesgoncalves](https://github.com/filipesgoncalves))
+- Thiago ([Chizuli](https://github.com/Chizuli))
